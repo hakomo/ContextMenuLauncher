@@ -16,7 +16,7 @@ namespace Launcher {
         private const int VK_CONTROL = 0x11, VK_SHIFT = 0x10, VK_MENU = 0x12, KEYEVENTF_KEYUP = 2;
 
         private Launcher() {
-            cm.MenuItems.Add(new MenuItem("&Window Manager", delegate {
+            cm.MenuItems.Add(7, new MenuItem("&Window Manager", delegate {
                 keybd_event(VK_CONTROL, 0, 0, 0);
                 keybd_event(VK_MENU, 0, 0, 0);
                 keybd_event(VK_SHIFT, 0, 0, 0);
