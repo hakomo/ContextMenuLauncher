@@ -14,9 +14,9 @@ namespace Launcher {
         private static extern void keybd_event(byte v, byte s, int f, int i);
 
         private const int VK_CONTROL = 0x11, VK_SHIFT = 0x10, VK_MENU = 0x12, KEYEVENTF_KEYUP = 2;
-
+ 
         private Launcher() {
-            cm.MenuItems.Add(7, new MenuItem("&Window Manager", delegate {
+            cm.MenuItems[8].Click += delegate {
                 keybd_event(VK_CONTROL, 0, 0, 0);
                 keybd_event(VK_MENU, 0, 0, 0);
                 keybd_event(VK_SHIFT, 0, 0, 0);
@@ -25,14 +25,14 @@ namespace Launcher {
                 keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
                 keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
                 keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0);
-            }));
+            };
 
             FormBorderStyle = FormBorderStyle.None;
             Opacity = 0;
             ShowInTaskbar = false;
 
             GlobalMouse.Set(Handle);
-
+            
             WinAPI.RegisterHotKey(Handle, 9, 6, 'L');
         }
 
@@ -60,9 +60,7 @@ namespace Launcher {
 
         [STAThread]
         private static void Main() {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Launcher());
+            Util.RunMutex(() => Application.Run(new Launcher()), "0448904A-903D-4FE0-B83F-65E8FD5007E8");
         }
 
         private void InitializeComponent() {
