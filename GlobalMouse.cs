@@ -25,7 +25,7 @@ namespace Launcher {
 
         public static void Set(IntPtr hw) {
             IntPtr hh = IntPtr.Zero;
-            hh = SetWindowsHookEx(WH_MOUSE_LL, new llmp((cd, wp, lp) => {
+            hh = SetWindowsHookEx(WH_MOUSE_LL, (cd, wp, lp) => {
                 if(cd < 0) {
                 } else if(wp == WM_LBUTTONDOWN) {
                     l = true;
@@ -61,7 +61,7 @@ namespace Launcher {
                         mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, IntPtr.Zero);
                 }
                 return CallNextHookEx(hh, cd, wp, lp);
-            }), Marshal.GetHINSTANCE(typeof(GlobalMouse).Module), 0);
+            }, Marshal.GetHINSTANCE(typeof(GlobalMouse).Module), 0);
         }
     }
 }
