@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Hakomo.Library;
+using System;
 using System.Runtime.InteropServices;
-using UtilN;
 
 namespace Launcher {
 
@@ -11,14 +11,11 @@ namespace Launcher {
         [DllImport("user32")]
         private static extern int CallNextHookEx(IntPtr hh, int cd, int wp, IntPtr lp);
         [DllImport("user32")]
-        private static extern void mouse_event(int f, int x, int y, int d, IntPtr i);
-        [DllImport("user32")]
         private static extern IntPtr SetWindowsHookEx(int id, llmp hp, IntPtr hi, int tid);
         [DllImport("user32")]
         private static extern bool UnhookWindowsHookEx(IntPtr hh);
 
-        private const int MOUSEEVENTF_RIGHTDOWN = 8, MOUSEEVENTF_RIGHTUP = 0x10, WH_MOUSE_LL = 14,
-            WM_APP = 0x8000, WM_LBUTTONDOWN = 0x201, WM_LBUTTONUP = 0x202,
+        private const int WH_MOUSE_LL = 14, WM_APP = 0x8000, WM_LBUTTONDOWN = 0x201, WM_LBUTTONUP = 0x202,
             WM_RBUTTONDOWN = 0x204, WM_RBUTTONUP = 0x205;
 
         private static bool b = false, c = false, l = false, r = false;
@@ -39,7 +36,7 @@ namespace Launcher {
                 } else if(wp == WM_RBUTTONDOWN) {
                     r = true;
                     if(b) {
-                        mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, IntPtr.Zero);
+                        Mouse.RightDown();
                     } else if(l) {
                         c = true;
                         WinAPI.PostMessage(hw, WM_APP, 0, 0);
@@ -47,9 +44,9 @@ namespace Launcher {
                     return 1;
                 } else if(wp == WM_RBUTTONUP) {
                     if(b) {
-                        mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, IntPtr.Zero);
+                        Mouse.RightUp();
                     } else if(!c) {
-                        mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, 0, 0, 0, IntPtr.Zero);
+                        Mouse.RightClick();
                     }
                     r = false;
                     b = l;
@@ -58,7 +55,7 @@ namespace Launcher {
                 } else if(!b && !c) {
                     b |= l || r;
                     if(r)
-                        mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, IntPtr.Zero);
+                        Mouse.RightDown();
                 }
                 return CallNextHookEx(hh, cd, wp, lp);
             }, Marshal.GetHINSTANCE(typeof(GlobalMouse).Module), 0);
