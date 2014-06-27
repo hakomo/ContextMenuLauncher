@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Hakomo.Library;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using UtilN;
 
 namespace Launcher {
 
@@ -15,7 +15,7 @@ namespace Launcher {
             ShowInTaskbar = false;
 
             GlobalMouse.Set(Handle);
-            WinAPI.RegisterHotKey(Handle, 9, 6, 'W');
+            WinAPI.RegisterHotKey(Handle, 9, 6, Convert.ToByte(Keys.F17));
         }
 
         protected override void WndProc(ref Message m) {
@@ -26,7 +26,7 @@ namespace Launcher {
                 WinAPI.ForceFore(Handle);
                 cm.Show(this, new Point());
             } else if(m.Msg == WM_HOTKEY) {
-                Rectangle r = Screen.PrimaryScreen.WorkingArea;
+                Rectangle r = Screen.PrimaryScreen.Bounds;
                 Location = new Point(r.X + r.Width / 2, r.Y + r.Height / 2);
                 WinAPI.ForceFore(Handle);
                 cm.Show(this, new Point());
@@ -51,7 +51,7 @@ namespace Launcher {
         [STAThread]
         private static void Main() {
             Util.Run<Launcher>("0448904A-903D-4FE0-B83F-65E8FD5007E8", delegate {
-                Keyboard.Input(new Keys[] { Keys.ControlKey, Keys.ShiftKey }, Keys.W);
+                Keyboard.Input(new Keys[] { Keys.ControlKey, Keys.ShiftKey }, Keys.F17);
             });
         }
     }
