@@ -8,13 +8,14 @@ namespace Launcher {
     public class Launcher : Form {
 
         private readonly ContextMenu cm = Appli.ContextMenu;
+        private readonly GlobalMouse gm;
 
         public Launcher() {
             FormBorderStyle = FormBorderStyle.None;
             Opacity = 0;
             ShowInTaskbar = false;
 
-            GlobalMouse.Set(Handle);
+            gm = new GlobalMouse(Handle);
             WinAPI.RegisterHotKey(Handle, 9, 6, Convert.ToByte(Keys.F17));
         }
 
