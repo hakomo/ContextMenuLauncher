@@ -8,7 +8,7 @@ namespace Launcher {
 
     public class Appli {
 
-        public string Path = null, Text = "";
+        public string FullPath = null, RelativePath = null, Text = "";
         public Appli[] CascadeMenus = null;
 
         private MenuItem MenuItem {
@@ -18,9 +18,13 @@ namespace Launcher {
                     foreach(Appli appli in CascadeMenus)
                         mi.MenuItems.Add(appli.MenuItem);
                     return mi;
-                } else if(!string.IsNullOrWhiteSpace(Path)) {
-                    Path = Environment.ExpandEnvironmentVariables(Path);
-                    return new MenuItem(Text, (s, e) => WinAPI.Execute(Path));
+                } else if(!string.IsNullOrWhiteSpace(FullPath)) {
+                    FullPath = Environment.ExpandEnvironmentVariables(FullPath);
+                    return new MenuItem(Text, (s, e) => WinAPI.Execute(FullPath));
+                } else if(!string.IsNullOrWhiteSpace(RelativePath)) {
+                    using(new TemporaryCurrentDirectory(Application.StartupPath))
+                        RelativePath = Path.GetFullPath(RelativePath);
+                    return new MenuItem(Text, (s, e) => WinAPI.Execute(RelativePath));
                 }
                 return new MenuItem("-");
             }
