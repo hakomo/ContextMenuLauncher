@@ -33,7 +33,7 @@ namespace Launcher {
                 cm.Show(this, new Point());
             } else if(m.Msg == WM_EXITMENULOOP) {
                 foreach(IntPtr hw in WinAPI.GetTasks()) {
-                    if(hw == Handle || WinAPI.IsIconic(hw))
+                    if(WinAPI.IsIconic(hw))
                         continue;
                     WinAPI.ForceFore(hw);
                     break;
