@@ -15,7 +15,7 @@ namespace Launcher {
             Opacity = 0;
             ShowInTaskbar = false;
 
-            gm = new GlobalMouse(Handle);
+            // gm = new GlobalMouse(Handle);
             WinAPI.RegisterHotKey(Handle, 9, 6, Convert.ToByte(Keys.F17));
         }
 
