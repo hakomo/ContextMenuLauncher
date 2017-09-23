@@ -11,7 +11,7 @@ namespace Launcher {
         [DllImport("user32")]
         private static extern int CallNextHookEx(IntPtr hh, int cd, int wp, int lp);
         [DllImport("user32")]
-        private static extern IntPtr SetWindowsHookEx(int id, llmp hp, IntPtr hi, int tid);
+        private static extern IntPtr SetWindowsHookEx(int id, llmp hp, int hi, int tid);
         [DllImport("user32")]
         private static extern bool UnhookWindowsHookEx(IntPtr hh);
 
@@ -21,9 +21,12 @@ namespace Launcher {
         private readonly IntPtr hw, hh;
         private bool b = false, c = false, l = false, r = false;
 
+        private readonly llmp mp;
+
         public GlobalMouse(IntPtr hw) {
             this.hw = hw;
-            hh = SetWindowsHookEx(WH_MOUSE_LL, OnHook, Marshal.GetHINSTANCE(typeof(GlobalMouse).Module), 0);
+            mp = new llmp(OnHook);
+            hh = SetWindowsHookEx(WH_MOUSE_LL, mp, 0, 0);
         }
 
         private int OnHook(int cd, int wp, int lp) {
